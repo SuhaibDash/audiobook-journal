@@ -8,7 +8,7 @@ series order, and reading status.
 **Acceptance criteria**
 
 - The user can save a new book.
-- A book has one of these statuses: Want to read, Currently listening, Finished.
+- A book has one of these statuses: Wishlist, Currently listening, Finished.
 - More than one book may be marked Currently listening.
 - The saved book appears in the appropriate library section.
 
@@ -18,7 +18,7 @@ A user can view books grouped by reading status.
 
 **Acceptance criteria**
 
-- The library shows Want to read, Currently listening, and Finished sections.
+- The library shows Wishlist, Currently listening, and Finished sections.
 - A user can open a book from any section.
 
 ## R-03: Capture an entry
