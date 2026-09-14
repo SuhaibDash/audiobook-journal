@@ -23,7 +23,10 @@ without requiring views to know where their data comes from.
 ## Main models
 
 ```text
-Series 1 -> many Books
 Book   1 -> many Entries
+Book: title, author, optional series name, optional series order, reading status
 Entry: type, optional chapter number, body, created timestamp
 ```
+
+V1 stores series information as optional fields on a book. It does not yet have
+a separate Series model.

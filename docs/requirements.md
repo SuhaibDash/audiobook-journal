@@ -9,6 +9,7 @@ series order, and reading status.
 
 - The user can save a new book.
 - A book has one of these statuses: Want to read, Currently listening, Finished.
+- More than one book may be marked Currently listening.
 - The saved book appears in the appropriate library section.
 
 ## R-02: Browse reading history
