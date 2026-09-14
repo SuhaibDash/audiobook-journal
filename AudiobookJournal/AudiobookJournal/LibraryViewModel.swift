@@ -23,6 +23,13 @@ final class LibraryViewModel {
             seriesName: "The Stormlight Archive",
             seriesOrder: 2,
             status: .currentlyListening
+        ),
+        Book(
+            title: "Oathbringer",
+            author: "Brandon Sanderson",
+            seriesName: "The Stormlight Archive",
+            seriesOrder: 3,
+            status: .wantToRead
         )
     ]
 }

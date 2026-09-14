@@ -12,17 +12,19 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            List(viewModel.books) { book in
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(book.title)
-                        .font(.headline)
-                    
-                    Text(book.author)
-                        .foregroundStyle(.secondary)
-                    
-                    Text(book.status.displayName)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+            List {
+                ForEach(ReadingStatus.allCases, id: \.rawValue) { status in
+                    Section(status.displayName) {
+                        ForEach(viewModel.books.filter { $0.status == status }) { book in
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(book.title)
+                                    .font(.headline)
+
+                                Text(book.author)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
                 }
             }
             .navigationTitle("Library")
