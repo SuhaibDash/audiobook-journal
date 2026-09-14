@@ -8,15 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack(spacing: 12) {
-            Text("Audiobook Journal")
-                .font(.title)
+    @State private var viewModel = LibraryViewModel()
 
-            Text("Remember the stories you love.")
-                .foregroundStyle(.secondary)
+    var body: some View {
+        NavigationStack {
+            List(viewModel.books) { book in
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(book.title)
+                        .font(.headline)
+                    
+                    Text(book.author)
+                        .foregroundStyle(.secondary)
+                    
+                    Text(book.status.displayName)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .navigationTitle("Library")
         }
-        .padding()
     }
 }
 
