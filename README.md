@@ -6,7 +6,8 @@ listener remember books, series details, and thoughts captured while listening.
 ## Status
 
 Planning. See [the product brief](docs/product-brief.md) and
-[v1 requirements](docs/requirements.md).
+[v1 requirements](docs/requirements.md). Track implementation in
+[the progress log](docs/progress.md).
 
 ## Principles
 
