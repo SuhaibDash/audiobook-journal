@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BookDetailView: View {
     let book: Book
+    let entries: [Entry]
 
     var body: some View {
         List {
@@ -25,8 +26,28 @@ struct BookDetailView: View {
             }
 
             Section("Thoughts") {
-                Text("No thoughts yet.")
-                    .foregroundStyle(.secondary)
+                if entries.isEmpty {
+                    Text("No thoughts yet.")
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(entries) { entry in
+                        VStack(alignment: .leading, spacing: 6) {
+                            HStack(spacing: 8) {
+                                Text(entry.type.displayName)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+
+                                if let chapterNumber = entry.chapterNumber {
+                                    Text("Chapter \(chapterNumber)")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+
+                            Text(entry.body)
+                        }
+                    }
+                }
             }
         }
         .navigationTitle(book.title)

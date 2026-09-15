@@ -17,7 +17,10 @@ struct ContentView: View {
                     Section(status.displayName) {
                         ForEach(viewModel.books.filter { $0.status == status }) { book in
                             NavigationLink {
-                                BookDetailView(book: book)
+                                BookDetailView(
+                                    book: book,
+                                    entries: viewModel.entries(for: book)
+                                )
                             } label: {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(book.title)
