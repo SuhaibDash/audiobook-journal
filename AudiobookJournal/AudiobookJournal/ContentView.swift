@@ -19,7 +19,7 @@ struct ContentView: View {
                             NavigationLink {
                                 BookDetailView(
                                     book: book,
-                                    entries: viewModel.entries(for: book)
+                                    libraryViewModel: viewModel
                                 )
                             } label: {
                                 VStack(alignment: .leading, spacing: 4) {

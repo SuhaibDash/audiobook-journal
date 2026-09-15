@@ -9,9 +9,10 @@ import SwiftUI
 
 struct BookDetailView: View {
     let book: Book
-    let entries: [Entry]
+    let libraryViewModel: LibraryViewModel
 
     var body: some View {
+        let entries = libraryViewModel.entries(for: book)
         List {
             Section("Book") {
                 LabeledContent("Author", value: book.author)

@@ -10,7 +10,7 @@ import Observation
 @Observable
 final class LibraryViewModel {
     let books: [Book]
-    private let entries: [Entry]
+    private var entries: [Entry]
 
     init() {
         let wayOfKings = Book(
@@ -57,5 +57,21 @@ final class LibraryViewModel {
 
     func entries(for book: Book) -> [Entry] {
         entries.filter { $0.bookId == book.id }
+    }
+
+    func addEntry(
+        to book: Book,
+        type: EntryType,
+        chapterNumber: Int?,
+        body: String
+    ) {
+        let entry = Entry(
+            bookId: book.id,
+            type: type,
+            chapterNumber: chapterNumber,
+            body: body
+        )
+
+        entries.append(entry)
     }
 }
