@@ -9,7 +9,7 @@ import Observation
 
 @Observable
 final class LibraryViewModel {
-    let books: [Book]
+    private(set) var books: [Book]
     private var entries: [Entry]
 
     init() {
@@ -73,5 +73,23 @@ final class LibraryViewModel {
         )
 
         entries.append(entry)
+    }
+
+    func addBook(
+        title: String,
+        author: String,
+        seriesName: String?,
+        seriesOrder: Int?,
+        status: ReadingStatus
+    ) {
+        let book = Book(
+            title: title,
+            author: author,
+            seriesName: seriesName,
+            seriesOrder: seriesOrder,
+            status: status
+        )
+
+        books.append(book)
     }
 }
