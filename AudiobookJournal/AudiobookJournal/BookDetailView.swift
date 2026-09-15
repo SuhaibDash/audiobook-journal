@@ -10,6 +10,7 @@ import SwiftUI
 struct BookDetailView: View {
     let book: Book
     let libraryViewModel: LibraryViewModel
+    @State private var isPresentingEntryComposer = false
 
     var body: some View {
         let entries = libraryViewModel.entries(for: book)
@@ -53,5 +54,24 @@ struct BookDetailView: View {
         }
         .navigationTitle(book.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isPresentingEntryComposer = true
+                } label: {
+                    Label("Add Thought", systemImage: "plus")
+                }
+            }
+        }
+        .sheet(isPresented: $isPresentingEntryComposer) {
+            EntryComposerView { type, chapterNumber, body in
+                libraryViewModel.addEntry(
+                    to: book,
+                    type: type,
+                    chapterNumber: chapterNumber,
+                    body: body
+                )
+            }
+        }
     }
 }
