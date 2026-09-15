@@ -26,7 +26,7 @@ enum EntryType: String, CaseIterable {
 
 struct Entry: Identifiable {
     let id: UUID
-    let bookID: UUID
+    let bookId: UUID
     var type: EntryType
     var chapterNumber: Int?
     var body: String
@@ -34,7 +34,7 @@ struct Entry: Identifiable {
     var updatedAt: Date
     
     init(
-        bookID: UUID,
+        bookId: UUID,
         type: EntryType,
         chapterNumber: Int? = nil,
         body: String,
@@ -43,7 +43,7 @@ struct Entry: Identifiable {
         updatedAt: Date? = nil
     ) {
         self.id = id
-        self.bookID = bookID
+        self.bookId = bookId
         self.type = type
         self.chapterNumber = chapterNumber
         self.body = body
