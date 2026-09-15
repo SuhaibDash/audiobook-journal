@@ -17,7 +17,7 @@ running app—not merely when its models or placeholder UI exist.
 | --- | --- | --- |
 | R-01 Track a book | In progress | `Book` and `ReadingStatus` models exist. The library uses sample books; the user cannot create or save a book yet. |
 | R-02 Browse reading history | In progress | Books are grouped by status and open a detail screen. The data is temporary sample data, not a user's reading history. |
-| R-03 Capture an entry | In progress | `Entry` and `EntryType` models exist. The user cannot create an entry yet, and seeded entries are not shown on the detail screen yet. |
+| R-03 Capture an entry | Done | A user can choose an entry type, optionally enter a chapter, write a thought, save it, and immediately see it on the selected book's detail screen. Entries are in memory until R-04 is complete. |
 | R-04 Persist data locally | Not started | SwiftData persistence has not been introduced. |
 
 ## Completed milestones
@@ -28,18 +28,16 @@ running app—not merely when its models or placeholder UI exist.
 - Library grouped by Wishlist, Currently Listening, and Finished.
 - Book-detail navigation flow created.
 - Book and Entry models created.
+- Story-entry timeline and Add Thought composer created.
 
 ## Current slice
 
-**Show the existing entries for the selected book on its detail screen.**
+**Let the user add a book to the library.**
 
-The view model can now return entries for a specific book. The next step is to
-pass those entries into `BookDetailView` and replace the empty Thoughts state
-with a timeline.
+The library currently contains temporary sample books. The next step is an Add
+Book composer that adds a user-created book to the correct status section.
 
 ## Next milestones
 
-1. Show entries on a book-detail screen.
-2. Let the user create an entry.
-3. Let the user create a book.
-4. Persist books and entries locally with SwiftData.
+1. Let the user create a book.
+2. Persist books and entries locally with SwiftData.
