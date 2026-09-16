@@ -47,9 +47,13 @@ final class SwiftDataLibraryRepository {
     }
 
     func save(book: Book) throws {
-        let storedBook = StoredBook(domainBook: book)
+        if let existingBook = try storedBook(id: book.id) {
+            existingBook.update(from: book)
+        } else {
+            let newStoredBook = StoredBook(domainBook: book)
+            modelContext.insert(newStoredBook)
+        }
 
-        modelContext.insert(storedBook)
         try modelContext.save()
     }
 
