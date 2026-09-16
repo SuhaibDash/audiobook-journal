@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct AudiobookJournalApp: App {
@@ -13,5 +14,9 @@ struct AudiobookJournalApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: [
+            StoredBook.self,
+            StoredEntry.self
+        ])
     }
 }
