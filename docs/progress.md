@@ -15,8 +15,8 @@ running app—not merely when its models or placeholder UI exist.
 
 | Requirement | Status | Evidence / remaining work |
 | --- | --- | --- |
-| R-01 Track a book | In progress | `Book` and `ReadingStatus` models exist. The library uses sample books; the user cannot create or save a book yet. |
-| R-02 Browse reading history | In progress | Books are grouped by status and open a detail screen. The data is temporary sample data, not a user's reading history. |
+| R-01 Track a book | Done | A user can create a book with title, author, optional series data, and a reading status; the book appears in its matching library section. Data is in memory until R-04 is complete. |
+| R-02 Browse reading history | Done | The library groups user-created books by status, and a user can open any book's detail screen. Data is in memory until R-04 is complete. |
 | R-03 Capture an entry | Done | A user can choose an entry type, optionally enter a chapter, write a thought, save it, and immediately see it on the selected book's detail screen. Entries are in memory until R-04 is complete. |
 | R-04 Persist data locally | Not started | SwiftData persistence has not been introduced. |
 
@@ -29,15 +29,16 @@ running app—not merely when its models or placeholder UI exist.
 - Book-detail navigation flow created.
 - Book and Entry models created.
 - Story-entry timeline and Add Thought composer created.
+- Add Book composer created.
 
 ## Current slice
 
-**Let the user add a book to the library.**
+**Persist books and entries locally with SwiftData.**
 
-The library currently contains temporary sample books. The next step is an Add
-Book composer that adds a user-created book to the correct status section.
+The app currently keeps books and entries only in memory. The next step is to
+replace temporary in-memory state with SwiftData so the user's library remains
+after closing and reopening the app.
 
 ## Next milestones
 
-1. Let the user create a book.
-2. Persist books and entries locally with SwiftData.
+1. Persist books and entries locally with SwiftData.
