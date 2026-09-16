@@ -31,6 +31,8 @@ struct Book: Identifiable {
     var seriesName: String?
     var seriesOrder: Int?
     var status: ReadingStatus
+    let createdAt: Date
+    var updatedAt: Date
 
     init(
         title: String,
@@ -38,7 +40,9 @@ struct Book: Identifiable {
         seriesName: String? = nil,
         seriesOrder: Int? = nil,
         status: ReadingStatus = .wantToRead,
-        id: UUID = UUID()
+        id: UUID = UUID(),
+        createdAt: Date = Date(),
+        updatedAt: Date? = nil
     ) {
         self.id = id
         self.title = title
@@ -46,5 +50,7 @@ struct Book: Identifiable {
         self.seriesName = seriesName
         self.seriesOrder = seriesOrder
         self.status = status
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt ?? createdAt
     }
 }
