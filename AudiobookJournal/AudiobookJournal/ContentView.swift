@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var viewModel = LibraryViewModel()
+    @State private var isPresentingBookComposer = false
 
     var body: some View {
         NavigationStack {
@@ -35,6 +36,32 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Library")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isPresentingBookComposer = true
+                    } label: {
+                        Label("Add Book", systemImage: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $isPresentingBookComposer) {
+                BookComposerView {
+                    title,
+                    author,
+                    seriesName,
+                    seriesOrder,
+                    status in
+
+                    viewModel.addBook(
+                        title: title,
+                        author: author,
+                        seriesName: seriesName,
+                        seriesOrder: seriesOrder,
+                        status: status
+                    )
+                }
+            }
         }
     }
 }
