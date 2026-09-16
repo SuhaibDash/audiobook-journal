@@ -21,6 +21,16 @@ extension StoredBook {
         )
     }
 
+    func update(from domainBook: Book) {
+        title = domainBook.title
+        author = domainBook.author
+        seriesName = domainBook.seriesName
+        seriesOrder = domainBook.seriesOrder
+        statusRawValue = domainBook.status.rawValue
+        createdAt = domainBook.createdAt
+        updatedAt = domainBook.updatedAt
+    }
+
     func domainBook() throws -> Book {
         guard let status = ReadingStatus(rawValue: statusRawValue) else {
             throw LibraryRepositoryError.invalidReadingStatus(statusRawValue)
