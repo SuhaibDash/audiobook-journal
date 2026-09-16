@@ -45,10 +45,24 @@ final class SwiftDataLibraryRepository {
             entries: entries
         )
     }
+
     func save(book: Book) throws {
         let storedBook = StoredBook(domainBook: book)
 
         modelContext.insert(storedBook)
         try modelContext.save()
+    }
+
+    private func storedBook(id: UUID) throws -> StoredBook? {
+        let targetId = id
+
+        var descriptor = FetchDescriptor<StoredBook>(
+            predicate: #Predicate<StoredBook> { storedBook in
+                storedBook.id == targetId
+            }
+        )
+        descriptor.fetchLimit = 1
+
+        return try modelContext.fetch(descriptor).first
     }
 }
