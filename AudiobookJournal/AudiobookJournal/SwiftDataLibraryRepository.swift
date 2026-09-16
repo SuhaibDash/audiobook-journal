@@ -45,4 +45,10 @@ final class SwiftDataLibraryRepository {
             entries: entries
         )
     }
+    func save(book: Book) throws {
+        let storedBook = StoredBook(domainBook: book)
+
+        modelContext.insert(storedBook)
+        try modelContext.save()
+    }
 }
