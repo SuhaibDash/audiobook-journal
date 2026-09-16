@@ -17,3 +17,19 @@ name and series order directly on each book rather than creating a Series model.
 **Why:** Listeners may alternate books. Free-text series metadata supports
 useful organization without introducing separate series-management screens or
 relationships before the app has been used.
+
+## 2026-09-15: Keep domain and storage models separate
+
+**Decision:** Views and view models use `Book` and `Entry` domain structs. A
+repository maps them to SwiftData-specific stored records.
+
+**Why:** The app keeps storage details out of presentation code, gains a clear
+place for validation and save errors, and preserves a path to a future backend
+without giving up offline local storage.
+
+## 2026-09-15: Present entries in capture order
+
+**Decision:** A book's entries appear oldest first by `createdAt`.
+
+**Why:** The resulting timeline follows the listener's experience through the
+book and preserves when predictions and reflections were captured.

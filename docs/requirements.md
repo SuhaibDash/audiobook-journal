@@ -11,6 +11,8 @@ series order, and reading status.
 - A book has one of these statuses: Wishlist, Currently listening, Finished.
 - More than one book may be marked Currently listening.
 - The saved book appears in the appropriate library section.
+- The user can change a book's reading status after creating it.
+- Series order is either omitted or a positive whole number.
 
 ## R-02: Browse reading history
 
@@ -28,9 +30,10 @@ A user can create a note, reflection, or prediction for a book.
 **Acceptance criteria**
 
 - The user chooses an entry type.
-- The user may provide a chapter number or leave it general.
+- The user may provide a positive whole-number chapter or leave it general.
 - An entry includes text and a capture timestamp.
 - Saving returns the user to the book's entry timeline.
+- Entries appear in capture order, oldest first.
 
 ## R-04: Persist data locally
 
@@ -40,3 +43,5 @@ A user's books and entries remain available after the app is closed and reopened
 
 - The app does not require an account or internet connection for v1.
 - Data is stored locally on the device.
+- If a save fails, the app keeps the user's draft visible and explains that it
+  was not saved.

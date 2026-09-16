@@ -15,10 +15,10 @@ running app—not merely when its models or placeholder UI exist.
 
 | Requirement | Status | Evidence / remaining work |
 | --- | --- | --- |
-| R-01 Track a book | Done | A user can create a book with title, author, optional series data, and a reading status; the book appears in its matching library section. Data is in memory until R-04 is complete. |
+| R-01 Track a book | In progress | A user can create a book and it appears in the correct section. Changing status and validating series order remain. Data is in memory until R-04 is complete. |
 | R-02 Browse reading history | Done | The library groups user-created books by status, and a user can open any book's detail screen. Data is in memory until R-04 is complete. |
-| R-03 Capture an entry | Done | A user can choose an entry type, optionally enter a chapter, write a thought, save it, and immediately see it on the selected book's detail screen. Entries are in memory until R-04 is complete. |
-| R-04 Persist data locally | Not started | SwiftData persistence has not been introduced. |
+| R-03 Capture an entry | In progress | A user can create an entry and see it on the selected book. Chapter validation and explicit capture ordering remain. Entries are in memory until R-04 is complete. |
+| R-04 Persist data locally | In progress | The initial SwiftData record schema exists. The model container, repository, save-error flow, and relaunch verification remain. |
 
 ## Completed milestones
 
