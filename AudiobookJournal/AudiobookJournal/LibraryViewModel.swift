@@ -33,12 +33,13 @@ final class LibraryViewModel {
         entries.filter { $0.bookId == book.id }
     }
 
+    @discardableResult
     func addEntry(
         to book: Book,
         type: EntryType,
         chapterNumber: Int?,
         body: String
-    ) {
+    ) -> SaveResult {
         let entry = Entry(
             bookId: book.id,
             type: type,
@@ -46,7 +47,16 @@ final class LibraryViewModel {
             body: body
         )
 
-        entries.append(entry)
+        do {
+            try repository.save(entry: entry)
+            entries.append(entry)
+            errorMessage = nil
+            return .success
+        } catch {
+            let message = error.localizedDescription
+            errorMessage = message
+            return .failure(message: message)
+        }
     }
 
     @discardableResult
