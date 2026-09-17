@@ -69,4 +69,17 @@ final class SwiftDataLibraryRepository {
 
         return try modelContext.fetch(descriptor).first
     }
+
+    private func storedEntry(id: UUID) throws -> StoredEntry? {
+        let targetId = id
+
+        var descriptor = FetchDescriptor<StoredEntry>(
+            predicate: #Predicate<StoredEntry> { storedEntry in
+                storedEntry.id == targetId
+            }
+        )
+        descriptor.fetchLimit = 1
+
+        return try modelContext.fetch(descriptor).first
+    }
 }
