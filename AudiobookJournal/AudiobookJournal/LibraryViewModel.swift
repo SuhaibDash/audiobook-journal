@@ -33,7 +33,6 @@ final class LibraryViewModel {
         entries.filter { $0.bookId == book.id }
     }
 
-    @discardableResult
     func addEntry(
         to book: Book,
         type: EntryType,
@@ -59,7 +58,6 @@ final class LibraryViewModel {
         }
     }
 
-    @discardableResult
     func addBook(
         title: String,
         author: String,
