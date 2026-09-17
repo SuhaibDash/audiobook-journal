@@ -56,7 +56,7 @@ final class LibraryViewModel {
         seriesName: String?,
         seriesOrder: Int?,
         status: ReadingStatus
-    ) -> Bool {
+    ) -> SaveResult {
         let book = Book(
             title: title,
             author: author,
@@ -69,10 +69,11 @@ final class LibraryViewModel {
             try repository.save(book: book)
             books.append(book)
             errorMessage = nil
-            return true
+            return .success
         } catch {
-            errorMessage = error.localizedDescription
-            return false
+            let message = error.localizedDescription
+            errorMessage = message
+            return .failure(message: message)
         }
     }
 }

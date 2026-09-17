@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BookComposerView: View {
-    let onSave: (String, String, String?, Int?, ReadingStatus) -> Bool
+    let onSave: (String, String, String?, Int?, ReadingStatus) -> SaveResult
 
     @Environment(\.dismiss) private var dismiss
     @State private var title = ""
@@ -16,6 +16,8 @@ struct BookComposerView: View {
     @State private var seriesName = ""
     @State private var seriesOrderText = ""
     @State private var status: ReadingStatus = .wantToRead
+    @State private var saveErrorMessage = ""
+    @State private var isShowingSaveError = false
 
     private var trimmedTitle: String {
         title.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -62,7 +64,7 @@ struct BookComposerView: View {
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        let didSave = onSave(
+                        let result = onSave(
                             trimmedTitle,
                             trimmedAuthor,
                             optionalSeriesName,
@@ -70,12 +72,25 @@ struct BookComposerView: View {
                             status
                         )
 
-                        if didSave {
+                        switch result {
+                        case .success:
                             dismiss()
+
+                        case .failure(let message):
+                            saveErrorMessage = message
+                            isShowingSaveError = true
                         }
                     }
                     .disabled(trimmedTitle.isEmpty || trimmedAuthor.isEmpty)
                 }
+            }
+            .alert(
+                "Couldn't save book, please try again.",
+                isPresented: $isShowingSaveError
+            ) {
+                Button("Ok", role: .cancel) {}
+            } message: {
+                Text(saveErrorMessage)
             }
         }
     }
