@@ -7,6 +7,7 @@
 
 import Observation
 
+@MainActor
 @Observable
 final class LibraryViewModel {
     private(set) var books: [Book]
