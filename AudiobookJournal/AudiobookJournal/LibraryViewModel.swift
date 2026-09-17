@@ -12,6 +12,7 @@ import Observation
 final class LibraryViewModel {
     private(set) var books: [Book]
     private var entries: [Entry]
+    private(set) var errorMessage: String?
 
     init() {
         let wayOfKings = Book(
