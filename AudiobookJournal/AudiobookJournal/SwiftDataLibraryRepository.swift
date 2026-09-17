@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @MainActor
-final class SwiftDataLibraryRepository {
+final class SwiftDataLibraryRepository: LibraryRepository {
     private let modelContext: ModelContext
 
     init(modelContext: ModelContext) {
