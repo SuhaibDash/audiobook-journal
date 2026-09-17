@@ -8,8 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var viewModel = LibraryViewModel()
+    @State private var viewModel: LibraryViewModel
     @State private var isPresentingBookComposer = false
+
+    @MainActor
+    init(viewModel: LibraryViewModel) {
+        _viewModel = State(initialValue: viewModel)
+    }
+
+    @MainActor
+    init() {
+        _viewModel = State(initialValue: LibraryViewModel())
+    }
 
     var body: some View {
         NavigationStack {
