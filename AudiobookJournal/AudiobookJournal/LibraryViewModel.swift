@@ -57,6 +57,18 @@ final class LibraryViewModel {
         ]
     }
 
+    init(repository: any LibraryRepository) {
+        do {
+            let snapshot = try repository.fetchLibrary()
+            books = snapshot.books
+            entries = snapshot.entries
+        } catch {
+            books = []
+            entries = []
+            errorMessage = error.localizedDescription
+        }
+    }
+
     func entries(for book: Book) -> [Entry] {
         entries.filter { $0.bookId == book.id }
     }
