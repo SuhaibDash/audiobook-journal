@@ -57,6 +57,27 @@ final class SwiftDataLibraryRepository {
         try modelContext.save()
     }
 
+    func save(entry: Entry) throws {
+        guard let entryBook = try storedBook(id: entry.bookId) else {
+            throw LibraryRepositoryError.missingBook(entry.bookId)
+        }
+
+        if let existingEntry = try storedEntry(id: entry.id) {
+            existingEntry.update(
+                from: entry,
+                storedBook: entryBook
+            )
+        } else {
+            let newStoredEntry = StoredEntry(
+                domainEntry: entry,
+                storedBook: entryBook
+            )
+            modelContext.insert(newStoredEntry)
+        }
+
+        try modelContext.save()
+    }
+
     private func storedBook(id: UUID) throws -> StoredBook? {
         let targetId = id
 
