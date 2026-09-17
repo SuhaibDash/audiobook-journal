@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct EntryComposerView: View {
-    let onSave: (EntryType, Int?, String) -> Void
+    let onSave: (EntryType, Int?, String) -> SaveResult
 
     @Environment(\.dismiss) private var dismiss
     @State private var entryType: EntryType = .note
     @State private var chapterText = ""
     @State private var bodyText = ""
+    @State private var saveErrorMessage = ""
+    @State private var isShowingSaveError = false
 
     private var trimmedBody: String {
         bodyText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -49,11 +51,31 @@ struct EntryComposerView: View {
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        onSave(entryType, Int(chapterText), trimmedBody)
-                        dismiss()
+                        let result = onSave(
+                            entryType,
+                            Int(chapterText),
+                            trimmedBody
+                        )
+
+                        switch result {
+                        case .success:
+                            dismiss()
+
+                        case .failure(let message):
+                            saveErrorMessage = message
+                            isShowingSaveError = true
+                        }
                     }
                     .disabled(trimmedBody.isEmpty)
                 }
+            }
+            .alert(
+                "Couldn't save entry, please try again.",
+                isPresented: $isShowingSaveError
+            ) {
+                Button("Ok", role: .cancel) {}
+            } message: {
+                Text(saveErrorMessage)
             }
         }
     }
