@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BookComposerView: View {
-    let onSave: (String, String, String?, Int?, ReadingStatus) -> Void
+    let onSave: (String, String, String?, Int?, ReadingStatus) -> Bool
 
     @Environment(\.dismiss) private var dismiss
     @State private var title = ""
@@ -62,14 +62,17 @@ struct BookComposerView: View {
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        onSave(
+                        let didSave = onSave(
                             trimmedTitle,
                             trimmedAuthor,
                             optionalSeriesName,
                             Int(seriesOrderText),
                             status
                         )
-                        dismiss()
+
+                        if didSave {
+                            dismiss()
+                        }
                     }
                     .disabled(trimmedTitle.isEmpty || trimmedAuthor.isEmpty)
                 }
