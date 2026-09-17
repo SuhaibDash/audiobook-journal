@@ -49,13 +49,14 @@ final class LibraryViewModel {
         entries.append(entry)
     }
 
+    @discardableResult
     func addBook(
         title: String,
         author: String,
         seriesName: String?,
         seriesOrder: Int?,
         status: ReadingStatus
-    ) {
+    ) -> Bool {
         let book = Book(
             title: title,
             author: author,
@@ -64,6 +65,14 @@ final class LibraryViewModel {
             status: status
         )
 
-        books.append(book)
+        do {
+            try repository.save(book: book)
+            books.append(book)
+            errorMessage = nil
+            return true
+        } catch {
+            errorMessage = error.localizedDescription
+            return false
+        }
     }
 }
