@@ -65,6 +65,18 @@ extension StoredEntry {
         )
     }
 
+    func update(
+        from domainEntry: Entry,
+        storedBook: StoredBook
+    ) {
+        typeRawValue = domainEntry.type.rawValue
+        chapterNumber = domainEntry.chapterNumber
+        body = domainEntry.body
+        createdAt = domainEntry.createdAt
+        updatedAt = domainEntry.updatedAt
+        book = storedBook
+    }
+
     func domainEntry() throws -> Entry {
         guard let type = EntryType(rawValue: typeRawValue) else {
             throw LibraryRepositoryError.invalidEntryType(typeRawValue)
