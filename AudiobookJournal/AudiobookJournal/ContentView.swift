@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     @State private var viewModel: LibraryViewModel
@@ -14,11 +15,6 @@ struct ContentView: View {
     @MainActor
     init(viewModel: LibraryViewModel) {
         _viewModel = State(initialValue: viewModel)
-    }
-
-    @MainActor
-    init() {
-        _viewModel = State(initialValue: LibraryViewModel())
     }
 
     var body: some View {
@@ -77,5 +73,21 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    let configuration = ModelConfiguration(
+        isStoredInMemoryOnly: true
+    )
+
+    let container = try! ModelContainer(
+        for: StoredBook.self,
+        StoredEntry.self,
+        configurations: configuration
+    )
+
+    let repository = SwiftDataLibraryRepository(
+        modelContext: container.mainContext
+    )
+
+    ContentView(
+        viewModel: LibraryViewModel(repository: repository)
+    )
 }
