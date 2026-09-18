@@ -11,9 +11,15 @@ import SwiftData
 @MainActor
 final class SwiftDataLibraryRepository: LibraryRepository {
     private let modelContext: ModelContext
+    private let saveChanges: (ModelContext) throws -> Void
 
-    init(modelContext: ModelContext) {
-        self.modelContext = modelContext
+    init(
+        modelContainer: ModelContainer,
+        saveChanges: @escaping (ModelContext) throws -> Void = { try $0.save() }
+    ) {
+        modelContext = ModelContext(modelContainer)
+        modelContext.autosaveEnabled = false
+        self.saveChanges = saveChanges
     }
 
     func fetchLibrary() throws -> LibrarySnapshot {
@@ -54,7 +60,7 @@ final class SwiftDataLibraryRepository: LibraryRepository {
             modelContext.insert(newStoredBook)
         }
 
-        try modelContext.save()
+        try commitPendingChanges()
     }
 
     func save(entry: Entry) throws {
@@ -75,7 +81,16 @@ final class SwiftDataLibraryRepository: LibraryRepository {
             modelContext.insert(newStoredEntry)
         }
 
-        try modelContext.save()
+        try commitPendingChanges()
+    }
+
+    private func commitPendingChanges() throws {
+        do {
+            try saveChanges(modelContext)
+        } catch {
+            modelContext.rollback()
+            throw error
+        }
     }
 
     private func storedBook(id: UUID) throws -> StoredBook? {

@@ -84,7 +84,7 @@ struct ContentView: View {
     )
 
     let repository = SwiftDataLibraryRepository(
-        modelContext: container.mainContext
+        modelContainer: container
     )
 
     ContentView(

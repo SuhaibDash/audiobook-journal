@@ -24,9 +24,12 @@ SwiftData remains the local source for offline use when a backend is added.
 Future synchronization coordinates the local and remote stores rather than
 replacing local persistence.
 
-The initial SwiftData repository uses the main model context and is isolated to
-the main actor. It maps between the domain structs used by the app and the
-stored SwiftData records.
+The SwiftData repository is isolated to the main actor and owns a private model
+context created from the app's shared container. Autosave is disabled: each
+write saves explicitly and rolls back pending context changes if saving throws.
+This leaves SwiftUI's environment context and composer drafts untouched. Views
+receive domain state through the ViewModel; they do not rely on cross-context
+observation. The repository maps between domain structs and stored records.
 
 Repository invariants:
 

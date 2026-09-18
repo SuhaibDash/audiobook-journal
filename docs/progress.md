@@ -18,7 +18,7 @@ running app—not merely when its models or placeholder UI exist.
 | R-01 Track a book | In progress | A user can create and persist a book in the correct section. Changing status and validating series order remain. |
 | R-02 Browse reading history | Done | The library groups persisted books by status, and a user can open any book from any section. |
 | R-03 Capture an entry | In progress | A user can create an entry, see it on the selected book, and retain it across relaunch. Chapter validation and explicit capture ordering remain. |
-| R-04 Persist data locally | In progress | Books and entries survive relaunch. Automated tests verify ViewModel behavior when repository saves throw. Presented failure previews manually verify alerts, draft retention, and Cancel for both composers. Actual SwiftData save-failure recovery remains unverified. |
+| R-04 Persist data locally | Done | Books and entries survive relaunch. ViewModel failure tests pass; presented previews verify alerts, draft retention, and Cancel. A real in-memory SwiftData context with an injected save error verifies rollback of inserts and edits, retry, and isolation from another context. Physical disk failures were not simulated. |
 
 ## Completed milestones
 
@@ -34,18 +34,19 @@ running app—not merely when its models or placeholder UI exist.
 - Book and entry persistence verified across app relaunches.
 - Save-result handling added so failed drafts remain visible with an explanation.
 - Book and entry save failures covered by ViewModel tests and manual sheet-preview checks.
+- Repository rollback and retry verified with real SwiftData models and an injected save error.
 
 ## Current slice
 
 **Finish the remaining v1 integrity and validation behavior.**
 
 Local persistence works for books and entries. Controlled failures have been
-checked at the ViewModel and composer layers. Remaining work includes SwiftData
-save-failure recovery, positive-number validation, explicit entry ordering,
-and changing a book's reading status.
+checked at the repository, ViewModel, and composer layers. Remaining work includes
+positive-number validation, explicit entry ordering, and changing a book's
+reading status.
 
 ## Next milestones
 
-1. Verify SwiftData context recovery after a failed save.
-2. Validate series and chapter numbers.
+1. Validate series and chapter numbers.
+2. Verify explicit entry ordering.
 3. Support changing a book's reading status.

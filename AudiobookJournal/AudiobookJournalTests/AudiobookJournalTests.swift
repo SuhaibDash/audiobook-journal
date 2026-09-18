@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 import Testing
 @testable import AudiobookJournal
 
@@ -33,6 +34,75 @@ private final class FailingLibraryRepository: LibraryRepository {
 }
 
 struct AudiobookJournalTests {
+
+    @Test
+    @MainActor
+    func failedStoredWritesRollBackAndCanBeRetried() throws {
+        let container = try ModelContainer(
+            for: StoredBook.self, StoredEntry.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        )
+        var shouldFail = false
+        let repository = SwiftDataLibraryRepository(modelContainer: container) { context in
+            #expect(context !== container.mainContext)
+            #expect(!context.autosaveEnabled)
+            if shouldFail {
+                throw TestRepositoryError.saveFailed
+            }
+            try context.save()
+        }
+        let book = Book(title: "Dune", author: "Frank Herbert")
+        try repository.save(book: book)
+
+        // Pending changes in another context must survive our rollback.
+        container.mainContext.autosaveEnabled = false
+        let unrelatedBook = StoredBook(domainBook: Book(title: "Other draft", author: "Author"))
+        container.mainContext.insert(unrelatedBook)
+
+        shouldFail = true
+        var editedBook = book
+        editedBook.title = "Unsaved title"
+        #expect(throws: TestRepositoryError.self) {
+            try repository.save(book: editedBook)
+        }
+        #expect(try repository.fetchLibrary().books.first?.title == "Dune")
+        #expect(container.mainContext.insertedModelsArray.contains { $0 === unrelatedBook })
+
+        let newBook = Book(title: "Retry me", author: "Author")
+        #expect(throws: TestRepositoryError.self) {
+            try repository.save(book: newBook)
+        }
+        #expect(try repository.fetchLibrary().books.count == 1)
+
+        let entry = Entry(bookId: book.id, type: .note, body: "Keep this draft")
+        #expect(throws: TestRepositoryError.self) {
+            try repository.save(entry: entry)
+        }
+        #expect(try repository.fetchLibrary().entries.isEmpty)
+
+        shouldFail = false
+        try repository.save(entry: entry)
+        try repository.save(book: newBook)
+
+        shouldFail = true
+        var editedEntry = entry
+        editedEntry.body = "Unsaved edit"
+        #expect(throws: TestRepositoryError.self) {
+            try repository.save(entry: editedEntry)
+        }
+        #expect(try repository.fetchLibrary().entries.first?.body == entry.body)
+
+        // A subsequent successful save must not persist the failed edits.
+        shouldFail = false
+        try repository.save(book: newBook)
+        let reader = SwiftDataLibraryRepository(modelContainer: container)
+        let snapshot = try reader.fetchLibrary()
+        #expect(snapshot.books.count == 2)
+        #expect(snapshot.books.first { $0.id == book.id }?.title == "Dune")
+        #expect(snapshot.entries.count == 1)
+        #expect(snapshot.entries.first?.body == entry.body)
+        container.mainContext.rollback()
+    }
 
     @Test
     @MainActor

@@ -24,7 +24,7 @@ struct AudiobookJournalApp: App {
             self.modelContainer = modelContainer
 
             let repository = SwiftDataLibraryRepository(
-                modelContext: modelContainer.mainContext
+                modelContainer: modelContainer
             )
 
             libraryViewModel = LibraryViewModel(
