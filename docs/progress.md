@@ -15,10 +15,10 @@ running app—not merely when its models or placeholder UI exist.
 
 | Requirement | Status | Evidence / remaining work |
 | --- | --- | --- |
-| R-01 Track a book | In progress | A user can create a book and it appears in the correct section. Changing status and validating series order remain. Data is in memory until R-04 is complete. |
-| R-02 Browse reading history | Done | The library groups user-created books by status, and a user can open any book's detail screen. Data is in memory until R-04 is complete. |
-| R-03 Capture an entry | In progress | A user can create an entry and see it on the selected book. Chapter validation and explicit capture ordering remain. Entries are in memory until R-04 is complete. |
-| R-04 Persist data locally | In progress | The initial SwiftData record schema exists. The model container, repository, save-error flow, and relaunch verification remain. |
+| R-01 Track a book | In progress | A user can create and persist a book in the correct section. Changing status and validating series order remain. |
+| R-02 Browse reading history | Done | The library groups persisted books by status, and a user can open any book from any section. |
+| R-03 Capture an entry | In progress | A user can create an entry, see it on the selected book, and retain it across relaunch. Chapter validation and explicit capture ordering remain. |
+| R-04 Persist data locally | In progress | SwiftData now persists books and entries, and both were verified after relaunch. Save failures retain the draft and expose an alert, but a controlled failure still needs verification. |
 
 ## Completed milestones
 
@@ -30,15 +30,20 @@ running app—not merely when its models or placeholder UI exist.
 - Book and Entry models created.
 - Story-entry timeline and Add Thought composer created.
 - Add Book composer created.
+- SwiftData schema, model mappings, repository, and app-level dependency injection added.
+- Book and entry persistence verified across app relaunches.
+- Save-result handling added so failed drafts remain visible with an explanation.
 
 ## Current slice
 
-**Persist books and entries locally with SwiftData.**
+**Finish the remaining v1 integrity and validation behavior.**
 
-The app currently keeps books and entries only in memory. The next step is to
-replace temporary in-memory state with SwiftData so the user's library remains
-after closing and reopening the app.
+Local persistence works for books and entries. The remaining work includes a
+controlled save-failure verification, positive-number validation, explicit
+entry ordering, and changing a book's reading status.
 
 ## Next milestones
 
-1. Persist books and entries locally with SwiftData.
+1. Verify the save-failure experience with a controlled repository failure.
+2. Validate series and chapter numbers.
+3. Support changing a book's reading status.
