@@ -80,3 +80,9 @@ struct EntryComposerView: View {
         }
     }
 }
+
+#Preview("Save failure") {
+    EntryComposerView { _, _, _ in
+        .failure(message: "This is a simulated save failure.")
+    }
+}
