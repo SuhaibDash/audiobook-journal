@@ -95,3 +95,16 @@ struct BookComposerView: View {
         }
     }
 }
+
+#Preview("Save failure") {
+    @Previewable @State var isPresented = false
+
+    Button("Add Book") {
+        isPresented = true
+    }
+    .sheet(isPresented: $isPresented) {
+        BookComposerView { _, _, _, _, _ in
+            .failure(message: "This is a simulated save failure.")
+        }
+    }
+}
