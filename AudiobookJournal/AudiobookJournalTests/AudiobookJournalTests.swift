@@ -34,8 +34,28 @@ private final class FailingLibraryRepository: LibraryRepository {
 
 struct AudiobookJournalTests {
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    @Test
+    @MainActor
+    func addBookReportsFailureWithoutChangingBooks() {
+        let repository = FailingLibraryRepository()
+        let viewModel = LibraryViewModel(repository: repository)
+
+        let result = viewModel.addBook(
+            title: "Dune",
+            author: "Frank Herbert",
+            seriesName: "Dune",
+            seriesOrder: 1,
+            status: .wantToRead
+        )
+
+        guard case .failure(let message) = result else {
+            Issue.record("Expected the book save to fail.")
+            return
+        }
+
+        #expect(message == "The test repository refused to save.")
+        #expect(viewModel.errorMessage == message)
+        #expect(viewModel.books.isEmpty)
     }
 
 }
