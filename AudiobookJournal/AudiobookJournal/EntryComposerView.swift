@@ -82,7 +82,14 @@ struct EntryComposerView: View {
 }
 
 #Preview("Save failure") {
-    EntryComposerView { _, _, _ in
-        .failure(message: "This is a simulated save failure.")
+    @Previewable @State var isPresented = false
+
+    Button("Add Thought") {
+        isPresented = true
+    }
+    .sheet(isPresented: $isPresented) {
+        EntryComposerView { _, _, _ in
+            .failure(message: "This is a simulated save failure.")
+        }
     }
 }
