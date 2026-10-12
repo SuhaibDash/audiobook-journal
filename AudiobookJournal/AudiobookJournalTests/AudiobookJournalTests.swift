@@ -20,15 +20,20 @@ private enum TestRepositoryError: LocalizedError {
 
 @MainActor
 private final class FailingLibraryRepository: LibraryRepository {
+    private(set) var bookSaveCallCount = 0
+    private(set) var entrySaveCallCount = 0
+
     func fetchLibrary() throws -> LibrarySnapshot {
         .empty
     }
 
     func save(book: Book) throws {
+        bookSaveCallCount += 1
         throw TestRepositoryError.saveFailed
     }
 
     func save(entry: Entry) throws {
+        entrySaveCallCount += 1
         throw TestRepositoryError.saveFailed
     }
 }
