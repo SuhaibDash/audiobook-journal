@@ -160,4 +160,27 @@ struct AudiobookJournalTests {
         #expect(viewModel.entries(for: book).isEmpty)
     }
 
+    @Test(arguments: [0, -1])
+    @MainActor
+    func invalidChapterNeverReachesRepository(chapterNumber: Int) {
+        let repository = FailingLibraryRepository()
+        let viewModel = LibraryViewModel(repository: repository)
+        let book = Book(title: "Dune", author: "Frank Herbert")
+
+        let result = viewModel.addEntry(
+            to: book,
+            type: .note,
+            chapterNumber: chapterNumber,
+            body: "An important detail."
+        )
+
+        guard case .failure(let message) = result else {
+            Issue.record("Expected invalid chapter to be rejected.")
+            return
+        }
+
+        #expect(message == "Chapter must be a positive whole number.")
+        #expect(repository.entrySaveCallCount == 0)
+        #expect(viewModel.entries(for: book).isEmpty)
+    }
 }
