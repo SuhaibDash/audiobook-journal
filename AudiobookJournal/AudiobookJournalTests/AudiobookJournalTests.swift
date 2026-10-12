@@ -184,6 +184,54 @@ struct AudiobookJournalTests {
         #expect(viewModel.entries(for: book).isEmpty)
     }
 
+    @Test(arguments: [0, -1])
+    @MainActor
+    func invalidSeriesOrderNeverReachesRepository(seriesOrder: Int) {
+        let repository = FailingLibraryRepository()
+        let viewModel = LibraryViewModel(repository: repository)
+
+        let result = viewModel.addBook(
+            title: "Dune",
+            author: "Frank Herbert",
+            seriesName: "Dune",
+            seriesOrder: seriesOrder,
+            status: .wantToRead
+        )
+
+        guard case .failure(let message) = result else {
+            Issue.record("Expected invalid series order to be rejected.")
+            return
+        }
+
+        #expect(message == "Series order must be a positive whole number.")
+        #expect(repository.bookSaveCallCount == 0)
+        #expect(viewModel.books.isEmpty)
+    }
+
+    @Test(arguments: [nil, 1, 12] as [Int?])
+    @MainActor
+    func validSeriesOrderReachesRepository(seriesOrder: Int?) {
+        let repository = FailingLibraryRepository()
+        let viewModel = LibraryViewModel(repository: repository)
+
+        let result = viewModel.addBook(
+            title: "Dune",
+            author: "Frank Herbert",
+            seriesName: "Dune",
+            seriesOrder: seriesOrder,
+            status: .wantToRead
+        )
+
+        #expect(repository.bookSaveCallCount == 1)
+
+        guard case .failure(let message) = result else {
+            Issue.record("Expected the test repository to fail.")
+            return
+        }
+
+        #expect(message == "The test repository refused to save.")
+    }
+
     @Test(arguments: [nil, 1, 12] as [Int?])
     @MainActor
     func validChapterReachesRepository(chapterNumber: Int?) {
