@@ -39,6 +39,11 @@ final class LibraryViewModel {
         chapterNumber: Int?,
         body: String
     ) -> SaveResult {
+        if let chapterNumber, chapterNumber <= 0 {
+            let message = "Chapter must be a positive whole number."
+            errorMessage = message
+            return .failure(message: message)
+        }
         let entry = Entry(
             bookId: book.id,
             type: type,
@@ -65,6 +70,11 @@ final class LibraryViewModel {
         seriesOrder: Int?,
         status: ReadingStatus
     ) -> SaveResult {
+        if let seriesOrder, seriesOrder <= 0 {
+            let message = "Series order must be a positive whole number."
+            errorMessage = message
+            return .failure(message: message)
+        }
         let book = Book(
             title: title,
             author: author,
