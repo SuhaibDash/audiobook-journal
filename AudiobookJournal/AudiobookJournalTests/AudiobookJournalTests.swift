@@ -183,4 +183,28 @@ struct AudiobookJournalTests {
         #expect(repository.entrySaveCallCount == 0)
         #expect(viewModel.entries(for: book).isEmpty)
     }
+
+    @Test(arguments: [nil, 1, 12] as [Int?])
+    @MainActor
+    func validChapterReachesRepository(chapterNumber: Int?) {
+        let repository = FailingLibraryRepository()
+        let viewModel = LibraryViewModel(repository: repository)
+        let book = Book(title: "Dune", author: "Frank Herbert")
+
+        let result = viewModel.addEntry(
+            to: book,
+            type: .note,
+            chapterNumber: chapterNumber,
+            body: "An important detail."
+        )
+
+        #expect(repository.entrySaveCallCount == 1)
+
+        guard case .failure(let message) = result else {
+            Issue.record("Expected the test repository to fail.")
+            return
+        }
+
+        #expect(message == "The test repository refused to save.")
+    }
 }
