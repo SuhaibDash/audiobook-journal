@@ -21,6 +21,22 @@ struct EntryComposerView: View {
         bodyText.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    private var isChapterValid: Bool {
+        let text = chapterText.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
+
+        if text.isEmpty {
+            return true
+        }
+
+        guard let number = Int(text) else {
+            return false
+        }
+
+        return number > 0
+    }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -34,6 +50,12 @@ struct EntryComposerView: View {
 
                     TextField("Chapter (optional)", text: $chapterText)
                         .keyboardType(.numberPad)
+
+                    if !isChapterValid {
+                        Text("Chapter must be a positive whole number.")
+                            .font(.caption)
+                            .foregroundStyle(.red)
+                    }
                 }
 
                 Section("Entry") {
@@ -53,7 +75,7 @@ struct EntryComposerView: View {
                     Button("Save") {
                         let result = onSave(
                             entryType,
-                            Int(chapterText),
+                            Int(chapterText.trimmingCharacters(in: .whitespacesAndNewlines)),
                             trimmedBody
                         )
 
@@ -66,7 +88,7 @@ struct EntryComposerView: View {
                             isShowingSaveError = true
                         }
                     }
-                    .disabled(trimmedBody.isEmpty)
+                    .disabled(trimmedBody.isEmpty || !isChapterValid)
                 }
             }
             .alert(
