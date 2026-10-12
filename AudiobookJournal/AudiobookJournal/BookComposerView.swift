@@ -32,6 +32,22 @@ struct BookComposerView: View {
         return trimmedName.isEmpty ? nil : trimmedName
     }
 
+    private var isSeriesOrderValid: Bool {
+        let text = seriesOrderText.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
+
+        if text.isEmpty {
+            return true
+        }
+
+        guard let number = Int(text) else {
+            return false
+        }
+
+        return number > 0
+    }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -52,6 +68,12 @@ struct BookComposerView: View {
 
                     TextField("Series order (optional)", text: $seriesOrderText)
                         .keyboardType(.numberPad)
+
+                    if !isSeriesOrderValid {
+                        Text("Series order must be a positive whole number.")
+                            .font(.caption)
+                            .foregroundStyle(.red)
+                    }
                 }
             }
             .navigationTitle("Add Book")
@@ -68,7 +90,7 @@ struct BookComposerView: View {
                             trimmedTitle,
                             trimmedAuthor,
                             optionalSeriesName,
-                            Int(seriesOrderText),
+                            Int(seriesOrderText.trimmingCharacters(in: .whitespacesAndNewlines)),
                             status
                         )
 
@@ -81,7 +103,11 @@ struct BookComposerView: View {
                             isShowingSaveError = true
                         }
                     }
-                    .disabled(trimmedTitle.isEmpty || trimmedAuthor.isEmpty)
+                    .disabled(
+                        trimmedTitle.isEmpty ||
+                        trimmedAuthor.isEmpty ||
+                        !isSeriesOrderValid
+                    )
                 }
             }
             .alert(
