@@ -11,12 +11,40 @@ struct BookDetailView: View {
     let book: Book
     let libraryViewModel: LibraryViewModel
     @State private var isPresentingEntryComposer = false
+    @State private var statusErrorMessage = ""
+    @State private var isShowingStatusError = false
+
+    private var readingStatus: Binding<ReadingStatus> {
+        Binding(
+            get: {
+                libraryViewModel.books.first { $0.id == book.id }?.status
+                    ?? book.status
+            },
+            set: { newStatus in
+                let result = libraryViewModel.changeReadingStatus(
+                    for: book.id,
+                    to: newStatus
+                )
+                if case .failure(let message) = result {
+                    statusErrorMessage = message
+                    isShowingStatusError = true
+                }
+            }
+        )
+    }
 
     var body: some View {
         let entries = libraryViewModel.entries(for: book)
         List {
             Section("Book") {
                 LabeledContent("Author", value: book.author)
+
+                Picker("Reading status", selection: readingStatus) {
+                    ForEach(ReadingStatus.allCases, id: \.rawValue) { status in
+                        Text(status.displayName)
+                            .tag(status)
+                    }
+                }
 
                 if let seriesName = book.seriesName {
                     LabeledContent("Series", value: seriesName)
@@ -54,6 +82,11 @@ struct BookDetailView: View {
         }
         .navigationTitle(book.title)
         .navigationBarTitleDisplayMode(.inline)
+        .alert("Couldn't Change Status", isPresented: $isShowingStatusError) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(statusErrorMessage)
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
