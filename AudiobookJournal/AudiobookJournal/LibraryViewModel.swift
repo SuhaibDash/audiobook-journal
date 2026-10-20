@@ -5,6 +5,7 @@
 //  Created by Suhaib Dashash on 9/13/26.
 //
 
+import Foundation
 import Observation
 
 @MainActor
@@ -33,6 +34,32 @@ final class LibraryViewModel {
         entries
             .filter { $0.bookId == book.id }
             .sorted { $0.createdAt < $1.createdAt }
+    }
+
+    func changeReadingStatus(
+        for bookId: UUID,
+        to status: ReadingStatus
+    ) -> SaveResult {
+        guard let index = books.firstIndex(where: { $0.id == bookId }) else {
+            let message = "This book is no longer in your library."
+            errorMessage = message
+            return .failure(message: message)
+        }
+
+        var updatedBook = books[index]
+        updatedBook.status = status
+        updatedBook.updatedAt = Date()
+
+        do {
+            try repository.save(book: updatedBook)
+            books[index] = updatedBook
+            errorMessage = nil
+            return .success
+        } catch {
+            let message = error.localizedDescription
+            errorMessage = message
+            return .failure(message: message)
+        }
     }
 
     func addEntry(
