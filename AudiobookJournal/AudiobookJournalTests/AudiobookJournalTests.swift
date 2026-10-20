@@ -22,9 +22,14 @@ private enum TestRepositoryError: LocalizedError {
 private final class FailingLibraryRepository: LibraryRepository {
     private(set) var bookSaveCallCount = 0
     private(set) var entrySaveCallCount = 0
+    private let snapshot: LibrarySnapshot
+
+    init(snapshot: LibrarySnapshot = .empty) {
+        self.snapshot = snapshot
+    }
 
     func fetchLibrary() throws -> LibrarySnapshot {
-        .empty
+        snapshot
     }
 
     func save(book: Book) throws {
@@ -39,6 +44,39 @@ private final class FailingLibraryRepository: LibraryRepository {
 }
 
 struct AudiobookJournalTests {
+
+    @Test
+    @MainActor
+    func entriesUseCaptureOrderAndExcludeOtherBooks() {
+        let book = Book(title: "Dune", author: "Frank Herbert")
+        let otherBook = Book(title: "Other book", author: "Another author")
+        let oldest = Entry(
+            bookId: book.id, type: .note, chapterNumber: 10, body: "First",
+            createdAt: Date(timeIntervalSince1970: 100),
+            updatedAt: Date(timeIntervalSince1970: 400)
+        )
+        let general = Entry(
+            bookId: book.id, type: .reflection, body: "Second",
+            createdAt: Date(timeIntervalSince1970: 200)
+        )
+        let newest = Entry(
+            bookId: book.id, type: .note, chapterNumber: 3, body: "Third",
+            createdAt: Date(timeIntervalSince1970: 300)
+        )
+        let unrelated = Entry(
+            bookId: otherBook.id, type: .note, body: "Other book's note",
+            createdAt: Date(timeIntervalSince1970: 50)
+        )
+        let repository = FailingLibraryRepository(snapshot: LibrarySnapshot(
+            books: [book, otherBook],
+            entries: [newest, unrelated, oldest, general]
+        ))
+        let viewModel = LibraryViewModel(repository: repository)
+
+        #expect(viewModel.entries(for: book).map(\.id) == [
+            oldest.id, general.id, newest.id
+        ])
+    }
 
     @Test
     @MainActor
