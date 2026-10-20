@@ -30,7 +30,9 @@ final class LibraryViewModel {
     }
 
     func entries(for book: Book) -> [Entry] {
-        entries.filter { $0.bookId == book.id }
+        entries
+            .filter { $0.bookId == book.id }
+            .sorted { $0.createdAt < $1.createdAt }
     }
 
     func addEntry(
