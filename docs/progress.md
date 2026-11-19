@@ -19,7 +19,7 @@ running app—not merely when its models or placeholder UI exist.
 | R-02 Browse reading history | In progress | The original three sections work. Scope expanded to include DNF; that section is not implemented. |
 | R-03 Capture an entry | In progress | A user can create an entry, see it on the selected book, and retain it across relaunch. Optional positive chapter validation is verified in the composer. Explicit capture ordering remains to be verified. |
 | R-04 Persist data locally | Done | Books and entries survive relaunch. ViewModel failure tests pass; presented previews verify alerts, draft retention, and Cancel. A real in-memory SwiftData context with an injected save error verifies rollback of inserts and edits, retry, and isolation from another context. Physical disk failures were not simulated. |
-| R-05 Track books not finished | Not started | DNF status, section, optional reason, and resume behavior are specified. Reason-history behavior needs a design decision. |
+| R-05 Track books not finished | Not started | DNF status, section, optional reason, and resume behavior are specified. Dated DNF history will remain visible after resuming. |
 
 ## Completed milestones
 

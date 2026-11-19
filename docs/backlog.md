@@ -3,8 +3,8 @@
 ## Planned v1 additions
 
 - R-05: Did Not Finish (DNF) status and section for standalone and series books,
-  with an optional editable "Why I stopped" reason. Define reason-history
-  behavior when resuming before implementation; see `requirements.md`.
+  with an optional editable "Why I stopped" reason and dated DNF history
+  retained after resuming; see `requirements.md`.
 
 ## Later enhancements
 

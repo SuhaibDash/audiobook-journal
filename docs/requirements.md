@@ -63,11 +63,10 @@ stopped, so their reading history includes unfinished books as well.
   book. The reason is optional and does not block marking a book DNF.
 - The reason is visible on the DNF book's detail screen.
 - The user can resume a DNF book by changing its status to Currently listening.
-- DNF status and the reason persist across relaunches. Failed saves report an
+- Each transition into DNF records a dated history item, including the optional
+  reason. It remains visible in the book's history after resuming, while the
+  current status reflects Currently listening. Use "Marked DNF" for the item.
+- Stopping again after resuming creates a new dated DNF item rather than
+  overwriting the earlier one. Editing a reason updates its corresponding item.
+- DNF status and history persist across relaunches. Failed saves report an
   error, preserve any reason draft, and leave the last saved state unchanged.
-
-**Design question before implementation**
-
-- Decide whether a reason should remain visible as history after resuming, and
-  how to handle stopping the same book again. Do not silently discard a saved
-  reason when changing status.

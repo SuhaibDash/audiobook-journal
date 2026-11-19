@@ -33,3 +33,13 @@ without giving up offline local storage.
 
 **Why:** The resulting timeline follows the listener's experience through the
 book and preserves when predictions and reflections were captured.
+
+## 2026-11-18: Preserve DNF reasons as dated history
+
+**Decision:** Use "DNF" in user-facing status labels. Record each transition
+into DNF as a dated "Marked DNF" history item with an optional reason. Resuming
+changes the current status but retains that item. A later DNF transition adds
+another item; editing a reason updates its associated item.
+
+**Why:** The listener can recall why they stopped earlier without implying the
+book is still abandoned. Multiple attempts should not overwrite prior history.
