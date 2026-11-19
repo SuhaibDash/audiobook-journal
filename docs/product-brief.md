@@ -5,12 +5,16 @@
 Audiobook listeners can lose important story details and their own reactions,
 especially when reading a long series over time. Notes are inconvenient to
 capture in generic tools, and completed books can disappear from memory.
+Books abandoned partway through can also be forgotten, along with the reasons
+for stopping, whether they are standalone titles or part of a series.
 
 ## Product statement
 
 Audiobook Journal is a private iPhone companion that lets a listener track
 their reading history and capture spoiler-safe notes, reflections, and
 predictions by book and optional chapter.
+Reading history includes books marked Did Not Finish (DNF), with an optional
+reason for stopping.
 
 ## Initial user
 

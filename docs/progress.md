@@ -15,10 +15,11 @@ running app—not merely when its models or placeholder UI exist.
 
 | Requirement | Status | Evidence / remaining work |
 | --- | --- | --- |
-| R-01 Track a book | In progress | A user can create and persist a book in the correct section. Optional positive series-order validation is verified in the composer. Changing status remains. |
-| R-02 Browse reading history | Done | The library groups persisted books by status, and a user can open any book from any section. |
+| R-01 Track a book | In progress | Creation and optional series-order validation are verified. Status-change code exists but runtime verification remains. Newly planned DNF status is not implemented. |
+| R-02 Browse reading history | In progress | The original three sections work. Scope expanded to include DNF; that section is not implemented. |
 | R-03 Capture an entry | In progress | A user can create an entry, see it on the selected book, and retain it across relaunch. Optional positive chapter validation is verified in the composer. Explicit capture ordering remains to be verified. |
 | R-04 Persist data locally | Done | Books and entries survive relaunch. ViewModel failure tests pass; presented previews verify alerts, draft retention, and Cancel. A real in-memory SwiftData context with an injected save error verifies rollback of inserts and edits, retry, and isolation from another context. Physical disk failures were not simulated. |
+| R-05 Track books not finished | Not started | DNF status, section, optional reason, and resume behavior are specified. Reason-history behavior needs a design decision. |
 
 ## Completed milestones
 
@@ -44,9 +45,10 @@ running app—not merely when its models or placeholder UI exist.
 Local persistence works for books and entries. Controlled failures have been
 checked at the repository, ViewModel, and composer layers. Composer number
 validation is verified. Remaining work includes explicit entry ordering and
-changing a book's reading status.
+changing a book's reading status. DNF tracking is a newly planned v1 addition.
 
 ## Next milestones
 
 1. Verify explicit entry ordering.
 2. Support changing a book's reading status.
+3. Implement R-05: DNF status, library section, and optional reason.

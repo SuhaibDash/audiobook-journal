@@ -1,5 +1,13 @@
 # Backlog
 
+## Planned v1 additions
+
+- R-05: Did Not Finish (DNF) status and section for standalone and series books,
+  with an optional editable "Why I stopped" reason. Define reason-history
+  behavior when resuming before implementation; see `requirements.md`.
+
+## Later enhancements
+
 These are intentionally deferred until the core capture and recall flow has
 been used on a real phone.
 
