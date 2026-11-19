@@ -41,10 +41,9 @@ flowchart TB
             container -.->|"Creates and configures"| context
             container -.->|"Manages"| disk
         end
-        app -.->|"Creates and injects"| vm
-        app -.->|"Creates and injects"| repo
+        app -.->|"Injects ViewModel into root View"| views
         app -.->|"Creates"| container
-        repo -.->|"Implements"| contract
+        contract -.->|"Implemented by"| repo
     end
 ```
 
